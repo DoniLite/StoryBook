@@ -14,12 +14,12 @@ window.onload = () => {
     Object.keys(article).forEach((key) => {
       articleContainer.insertAdjacentHTML(
         'beforeend',
-        `<li><a href="/page.html??${article[key].title}">${article[key].title}</a></li>`
+        `<li><a href="./page.html?${key}">${article[key].title}</a></li>`
       );
       navList.insertAdjacentHTML(
         'beforeend',
         `<li>
-            <a href="/page.html??${article[key].title}">${article[key].title}</a>
+            <a href="./page.html?${key}">${article[key].title}</a>
           </li>`
       );
     });
