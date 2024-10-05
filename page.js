@@ -1,6 +1,5 @@
 import { article } from './article.js';
 
-
 const closer = document.querySelector('#closer');
 const rider = document.querySelector('#rider');
 const navContainer = document.querySelector('#navContainer');
@@ -20,7 +19,7 @@ window.onload = async () => {
   console.log(link);
   const matched = article[link];
   console.log(matched);
-  
+  await initParsingAPI(matched);
 };
 
 closer.addEventListener('click', (e) => {
@@ -37,9 +36,32 @@ rider.addEventListener('click', (e) => {
   navContainer.style.transform = 'translateX(0%)';
 });
 
-const initParsingAPI = async () => {
-    const result = await fetch(``);
-    const data = await result.json();
-    const parsed = data.parsed;
-    defaultContainer.insertAdjacentHTML('afterbegin', parsed);
-}
+/**
+ *
+ * @param {{title: string; content: string}} obj
+ */
+const initParsingAPI = async (obj) => {
+  const result = await fetch(`https://ghostify.site/api/v1/parser`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      content: obj.content,
+      ext: 'md',
+      target: 'html',
+    }),
+  });
+
+  if (!result.ok) {
+    console.error(`Erreur : ${result.statusText}`);
+    return;
+  }
+
+  const data = await result.json();
+  console.log(data);
+
+  if (!data.success) window.location.href = '/';
+  const parsed = data.data;
+  defaultContainer.insertAdjacentHTML('afterbegin', parsed);
+};
