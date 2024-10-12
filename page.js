@@ -1,4 +1,5 @@
 import { article } from './article.js';
+import { marked } from 'https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js';
 
 const closer = document.querySelector('#closer');
 const rider = document.querySelector('#rider');
@@ -38,30 +39,34 @@ rider.addEventListener('click', (e) => {
 
 /**
  *
- * @param {{title: string; content: string}} obj
+ * @param {{title: string; content: string; meta: string}} obj
  */
 const initParsingAPI = async (obj) => {
-  const result = await fetch(`https://ghostify.site/api/v1/parser`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      content: obj.content,
-      ext: 'md',
-      target: 'html',
-    }),
-  });
+  console.log(marked);
+  const html = await marked.parse(obj.content);
+  console.log(html);
+  // const result = await fetch(`http://localhost:3081/api/v1/parser`, {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify({
+  //     content: obj.content,
+  //     ext: 'md',
+  //     target: 'html',
+  //   }),
+  // });
 
-  if (!result.ok) {
-    console.error(`Erreur : ${result.statusText}`);
-    return;
-  }
+  // if (!result.ok) {
+  //   console.error(`Erreur : ${result.statusText}`);
+  //   return;
+  // }
 
-  const data = await result.json();
-  console.log(data);
+  // const data = await result.json();
+  // console.log(data);
 
-  if (!data.success) window.location.href = '/';
-  const parsed = data.data;
-  defaultContainer.insertAdjacentHTML('afterbegin', parsed);
+  // if (!data.success) window.location.href = '/';
+  // const parsed = data.data;
+  defaultContainer.insertAdjacentHTML('afterbegin', html);
+  document.querySelector('head').insertAdjacentHTML('beforeend', obj.meta)
 };

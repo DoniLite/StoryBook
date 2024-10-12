@@ -8,6 +8,7 @@
 
 a {
   color: white;
+  text-decoration: none;
 }
 
 body {
@@ -89,8 +90,8 @@ footer {
   position: fixed;
   top: 0;
   right: 0;
-  width: 50%;
-  height: 50vh;
+  width: 70%;
+  height: 70vh;
   padding: 1.5rem;
   /* display: flex;
     justify-content: center; */
